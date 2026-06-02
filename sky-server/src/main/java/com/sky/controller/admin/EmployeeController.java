@@ -89,6 +89,18 @@ public class EmployeeController {
         log.info("员工状态：{}",status);
         return Result.success();
     }
+    @GetMapping("/{id}")
+    public Result getById(@PathVariable Long id){
+        log.info("员工id：{}",id);
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+    @PutMapping
+    public Result update(@RequestBody EmployeeDTO employeeDTO){
+        log.info("员工信息：{}",employeeDTO);
+        employeeService.update(employeeDTO);
+        return Result.success();
+    }
 
 
 }
