@@ -40,4 +40,10 @@ public class CategoryController {
         categoryService.update(categoryDTO);
         return Result.success();
     }
+    @DeleteMapping
+    public Result delete(Long id){
+        log.info("分类id：{}",id);
+        categoryService.delete(id);
+        return Result.success();
+    }
 }
