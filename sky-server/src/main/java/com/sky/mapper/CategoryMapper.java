@@ -11,6 +11,6 @@ public interface CategoryMapper {
     Page<Category> page(CategoryPageQueryDTO categoryPageQueryDTO);
 
     void update(Category category);
-    @Insert("insert into category (type, name, sort, create_time, update_time, create_user, update_user) values (#{type}, #{name}, #{sort}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})")
+    @Insert("insert into category (type, name, sort, create_time, update_time, create_user, update_user,status) values (#{type}, #{name}, #{sort}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser},#{status})")
     void add(Category category);
 }

@@ -34,4 +34,10 @@ public class CategoryController {
         categoryService.add(categoryDTO);
         return Result.success();
     }
+    @PutMapping
+    public Result update(@RequestBody CategoryDTO categoryDTO){
+        log.info("分类信息：{}",categoryDTO);
+        categoryService.update(categoryDTO);
+        return Result.success();
+    }
 }
