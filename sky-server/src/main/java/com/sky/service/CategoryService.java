@@ -5,4 +5,6 @@ import com.sky.result.PageResult;
 
 public interface CategoryService {
     PageResult page(CategoryPageQueryDTO categoryPageQueryDTO);
+
+    void startOrStop(Integer status, Long id);
 }
