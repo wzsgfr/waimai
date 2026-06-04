@@ -28,4 +28,10 @@ public class CategoryController {
         categoryService.startOrStop(status,id);
         return Result.success();
     }
+    @PostMapping
+    public Result add(@RequestBody CategoryDTO categoryDTO){
+        log.info("分类信息：{}",categoryDTO);
+        categoryService.add(categoryDTO);
+        return Result.success();
+    }
 }
