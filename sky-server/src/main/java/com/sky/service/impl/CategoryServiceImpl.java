@@ -11,6 +11,7 @@ import com.sky.entity.Category;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -67,14 +68,17 @@ public class CategoryServiceImpl implements CategoryService {
     }
     @Autowired
     private DishMapper dishMapper;
+    private SetmealMapper setmealMapper;
     @Override
     public void delete(Long id) {
         int count = dishMapper.countByCategoryId(id);
         if(count>0){
             throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_SETMEAL);
         }
-        else {
-            categoryMapper.delete(id);
+        count = setmealMapper.countByCategoryId(id);
+        if(count > 0){
+            //当前分类下有菜品，不能删除
+            throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_SETMEAL);
         }
 
     }
