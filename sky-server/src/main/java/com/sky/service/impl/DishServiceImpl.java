@@ -52,11 +52,12 @@ public class DishServiceImpl  implements DishService {
         BeanUtils.copyProperties(dishDTO,dish);
         dishMapper.add(dish);
         List<DishFlavor> flavors = dishDTO.getFlavors();
-        if(flavors != null && flavors.size() > 0)
+        if(flavors != null && flavors.size() > 0) {
             for (DishFlavor flavor : flavors) {
                 flavor.setDishId(dish.getId());
             }
-        dishFlavorMapper.insertBatch(flavors);
+            dishFlavorMapper.insertBatch(flavors);
+        }
 
     }
     @Autowired
@@ -65,7 +66,7 @@ public class DishServiceImpl  implements DishService {
     @Transactional
     public void delete(List<Long> ids) {
         for (Long id : ids) {
-            Dish dish = dishMapper.selectid(id);
+            Dish dish = dishMapper.selectId(id);
             if(dish.getStatus() == 1)
                 throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
             int count = setmealDishMapper.selectid(id);
@@ -76,5 +77,35 @@ public class DishServiceImpl  implements DishService {
         }
         dishMapper.delete(ids);
         dishFlavorMapper.deleteByDishId(ids);
+    }
+
+    @Override
+    public DishVO getById(Long id) {
+        DishVO dishVO = new DishVO();
+        Dish dish = dishMapper.selectId(id);
+        BeanUtils.copyProperties(dish,dishVO);
+
+        List<DishFlavor> flavors = dishFlavorMapper.getByDishId(id);
+        dishVO.setFlavors(flavors);
+        return dishVO;
+    }
+
+    @Override
+    @Transactional
+    public void update(DishDTO dishDTO) {
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO,dish);
+        dishMapper.update(dish);
+        dishFlavorMapper.delete(dishDTO.getId());
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+       if (flavors != null && flavors.size() > 0){
+           for (DishFlavor flavor : flavors) {
+               flavor.setDishId(dish.getId());
+           }
+           dishFlavorMapper.insertBatch(flavors);
+       }
+
+
+
     }
 }
