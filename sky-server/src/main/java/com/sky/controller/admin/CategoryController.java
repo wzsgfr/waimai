@@ -20,7 +20,7 @@ public class CategoryController {
     private CategoryService categoryService;
     @GetMapping("/page")
     public Result page(CategoryPageQueryDTO categoryPageQueryDTO){
-        log.info("员工分页查询：{}",categoryPageQueryDTO);
+        log.info("分页查询：{}",categoryPageQueryDTO);
         PageResult pageResult = categoryService.page(categoryPageQueryDTO);
         return Result.success(pageResult);
     }
