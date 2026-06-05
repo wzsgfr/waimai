@@ -2,22 +2,26 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+@Slf4j
 @Service
 public class DishServiceImpl  implements DishService {
     @Autowired
@@ -54,5 +58,23 @@ public class DishServiceImpl  implements DishService {
             }
         dishFlavorMapper.insertBatch(flavors);
 
+    }
+    @Autowired
+    private SetmealDishMapper setmealDishMapper ;
+    @Override
+    @Transactional
+    public void delete(List<Long> ids) {
+        for (Long id : ids) {
+            Dish dish = dishMapper.selectid(id);
+            if(dish.getStatus() == 1)
+                throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
+            int count = setmealDishMapper.selectid(id);
+            if(count > 0) {
+                log.info("菜品正在起售中");
+                throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
+            }
+        }
+        dishMapper.delete(ids);
+        dishFlavorMapper.deleteByDishId(ids);
     }
 }
