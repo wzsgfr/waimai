@@ -60,6 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
     @Autowired
     private DishMapper dishMapper;
+    @Autowired
     private SetmealMapper setmealMapper;
     @Override
     public void delete(Long id) {
@@ -72,6 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
             //当前分类下有菜品，不能删除
             throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_SETMEAL);
         }
+        categoryMapper.delete(id);
 
     }
 
