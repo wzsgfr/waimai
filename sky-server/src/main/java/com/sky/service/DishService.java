@@ -19,4 +19,6 @@ public interface DishService {
     DishVO getById(Long id);
 
     void update(DishDTO dishDTO);
+
+    List<DishVO> getByCategoryId(Integer categoryId);
 }
