@@ -8,6 +8,7 @@ import com.sky.vo.DishItemVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,12 +21,14 @@ public class SetmealSerivceImpl implements SetmealSerivce {
     @Autowired
     private SetmealMapper setmealMapper;
     @Override
+    @Cacheable(value = "setmealCache",key = "#categoryId")
     public List<Setmeal> list(Integer categoryId) {
         List<Setmeal> list=setmealMapper.list(categoryId);
         return list;
     }
 
     @Override
+    @Cacheable(value = "setmealCache",key = "#id")
     public List<DishItemVO> dishList(Integer id) {
         List<Integer> ids=setmealMapper.dishIds(id);
         List<Dish> list=setmealMapper.dishList(ids);

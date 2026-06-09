@@ -17,6 +17,8 @@ import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +50,7 @@ public class DishServiceImpl  implements DishService {
     private DishFlavorMapper dishFlavorMapper;
     @Override
     @Transactional
+    @CacheEvict(value = "dishCache",allEntries = true)
     public void add(DishDTO dishDTO) {
         Dish dish = new Dish();
         BeanUtils.copyProperties(dishDTO,dish);
@@ -65,6 +68,7 @@ public class DishServiceImpl  implements DishService {
     private SetmealDishMapper setmealDishMapper ;
     @Override
     @Transactional
+    @CacheEvict(value = "dishCache",allEntries = true)
     public void delete(List<Long> ids) {
         for (Long id : ids) {
             Dish dish = dishMapper.selectId(id);
@@ -93,6 +97,7 @@ public class DishServiceImpl  implements DishService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "dishCache",allEntries = true)
     public void update(DishDTO dishDTO) {
         Dish dish = new Dish();
         BeanUtils.copyProperties(dishDTO,dish);
@@ -111,6 +116,7 @@ public class DishServiceImpl  implements DishService {
     }
 
     @Override
+    @Cacheable(value = "dishCache",key = "#categoryId")
     public List<DishVO> getByCategoryId(Integer categoryId) {
         List<DishVO> dishVOList = new ArrayList<>();
         List<Dish> list = dishMapper.getByCategoryId(categoryId);
