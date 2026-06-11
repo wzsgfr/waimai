@@ -1,5 +1,6 @@
 package com.sky.controller.user;
 
+import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.UserLoginDTO;
 import com.sky.entity.User;
 import com.sky.properties.JwtProperties;
@@ -31,7 +32,7 @@ public class UserController {
         log.info("用户登录：{}", userLoginDTO.getCode());
         User user = userservice.login(userLoginDTO);
         Map<String, Object> map = new HashMap<>();
-        map.put("id", user.getId());
+        map.put(JwtClaimsConstant.USER_ID, user.getId());
         String token = JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(),map );
         return Result.success(UserLoginVO.builder()
                 .id(user.getId())
