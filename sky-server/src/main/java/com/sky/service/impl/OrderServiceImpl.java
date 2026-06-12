@@ -179,4 +179,20 @@ public class OrderServiceImpl implements OrderService {
         orderVO.setOrderDetailList(orderDetailList);
         return orderVO;
     }
+
+    @Override
+    public void cancel(Long id) {
+        orderMapper.cancel(id);
+    }
+
+    @Override
+    public void repetition(Long id) {
+        List<OrderDetail> orderDetailList = orderMapper.getByOrderId(id);
+        for (OrderDetail orderDetail : orderDetailList) {
+            ShoppingCart shoppingCart = new ShoppingCart();
+            BeanUtils.copyProperties(orderDetail, shoppingCart);
+            shoppingCart.setUserId(BaseContext.getCurrentId());
+            shoppingCartMapper.addAll(shoppingCart);
+        }
+    }
 }

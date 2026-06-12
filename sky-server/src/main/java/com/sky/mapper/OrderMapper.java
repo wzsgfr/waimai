@@ -5,10 +5,7 @@ import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.OrderDetail;
 import com.sky.entity.Orders;
 import com.sky.vo.OrderVO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -39,4 +36,7 @@ public interface OrderMapper {
     List<OrderDetail> getByOrderId(Long orderId);
     @Select("select * from orders where id = #{id}")
     Orders getByOrderIda(Long id);
+    @Update("update orders set status = 6 where id = #{id}")
+    void cancel(Long id);
+
 }
