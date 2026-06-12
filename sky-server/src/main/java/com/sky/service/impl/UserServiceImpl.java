@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
             user = User.builder()
                     .openid(openid)
                     .createTime(LocalDateTime.now())
+                    .name(String.copyValueOf(openid.toCharArray()))
                     .build();
             userMapper.insert(user);
         }

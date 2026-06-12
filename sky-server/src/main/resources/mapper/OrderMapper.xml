@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.OrderMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+     insert into
+     orders(number,status,user_id,address_book_id,order_time,phone,address,user_name,consignee,checkout_time,pay_method,amount,pay_status,cancel_reason,rejection_reason,cancel_time,estimated_delivery_time,delivery_status,delivery_time,pack_amount,tableware_number,tableware_status,remark)
+     values(#{number},#{status},#{userId},#{addressBookId},#{orderTime},#{phone},#{address},#{userName},#{consignee},#{checkoutTime},#{payMethod},#{amount},#{payStatus},#{cancelReason},#{rejectionReason},#{cancelTime},#{estimatedDeliveryTime},#{deliveryStatus},#{deliveryTime},#{packAmount},#{tablewareNumber},#{tablewareStatus},#{remark})
+    </insert>
+    <insert id="insertAll">
+        insert into order_detail(order_id,dish_id,setmeal_id,name,image,dish_flavor,number,amount) values
+        <foreach collection="list" item="orderDetail" separator=",">
+            (#{orderDetail.orderId},#{orderDetail.dishId},#{orderDetail.setmealId},#{orderDetail.name},#{orderDetail.image},#{orderDetail.dishFlavor},#{orderDetail.number},#{orderDetail.amount})
+        </foreach>
+    </insert>
+</mapper>
