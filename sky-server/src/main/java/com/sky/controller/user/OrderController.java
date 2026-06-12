@@ -8,6 +8,7 @@ import com.sky.result.Result;
 import com.sky.service.OrderService;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
+import com.sky.vo.OrderVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,12 @@ public class OrderController {
         log.info("查询历史订单：{}", ordersPageQueryDTO);
         PageResult pageResult = orderService.history(ordersPageQueryDTO);
         return Result.success(pageResult);
-
+    }
+    @GetMapping("/orderDetail/{id}")
+    public Result<OrderVO> show(@PathVariable Long id){
+        log.info("查询订单详情：{}", id);
+        OrderVO orderVO = orderService.show(id);
+        return Result.success(orderVO);
     }
 
 }

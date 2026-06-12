@@ -37,4 +37,6 @@ public interface OrderMapper {
     Page<Orders> pageQuery(OrdersPageQueryDTO ordersPageQueryDTO);
     @Select("select * from order_detail where order_id = #{orderId}")
     List<OrderDetail> getByOrderId(Long orderId);
+    @Select("select * from orders where id = #{id}")
+    Orders getByOrderIda(Long id);
 }
