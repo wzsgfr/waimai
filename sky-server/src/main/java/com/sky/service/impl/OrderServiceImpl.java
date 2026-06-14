@@ -214,6 +214,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void rejection(OrdersRejectionDTO  ordersRejectionDTO) {
-        orderMapper.rejection(ordersRejectionDTO);
+        Orders orders = new Orders();
+        BeanUtils.copyProperties(ordersRejectionDTO, orders);
+        orders.setCancelTime(LocalDateTime.now());
+        orderMapper.rejection(orders);
+    }
+
+    @Override
+    public void amindCancel(OrdersCancelDTO ordersCancelDTO) {
+        Orders orders = new Orders();
+        BeanUtils.copyProperties(ordersCancelDTO, orders);
+        orders.setCancelTime(LocalDateTime.now());
+        orderMapper.amindCancel(orders);
     }
 }

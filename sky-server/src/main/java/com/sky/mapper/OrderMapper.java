@@ -1,6 +1,7 @@
 package com.sky.mapper;
 
 import com.github.pagehelper.Page;
+import com.sky.dto.OrdersCancelDTO;
 import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersRejectionDTO;
 import com.sky.entity.OrderDetail;
@@ -46,6 +47,8 @@ public interface OrderMapper {
     OrderStatisticsVO statistics();
     @Update("update orders set status = 3 where id = #{id}")
     void confirm(Integer id);
-    @Update("update orders set status = 6  , rejection_reason=#{rejectionReason}  where id = #{id}")
-    void rejection(OrdersRejectionDTO ordersRejectionDTO);
+    @Update("update orders set status = 6  , rejection_reason=#{rejectionReason} ,cancel_time=#{cancelTime} where id = #{id}")
+    void rejection(Orders orders);
+    @Update("update orders set status = 6  ,cancel_reason =#{cancelReason} ,cancel_time=#{cancelTime} where id = #{id}")
+    void amindCancel(Orders orders);
 }
