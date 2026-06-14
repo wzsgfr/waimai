@@ -51,4 +51,6 @@ public interface OrderMapper {
     void rejection(Orders orders);
     @Update("update orders set status = 6  ,cancel_reason =#{cancelReason} ,cancel_time=#{cancelTime} where id = #{id}")
     void amindCancel(Orders orders);
+    @Update("update orders set status = 4 where id = #{id}")
+    void delivery(Long id);
 }

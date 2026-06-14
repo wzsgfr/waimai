@@ -56,4 +56,10 @@ public class OrderController {
         orderService. amindCancel(ordersCancelDTO);
         return Result.success();
     }
+    @PutMapping("/delivery/{id}")
+    public Result delivery(@PathVariable Long id){
+        log.info("订单派送，订单id为{}", id);
+        orderService.delivery(id);
+        return Result.success();
+    }
 }

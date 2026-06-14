@@ -227,4 +227,9 @@ public class OrderServiceImpl implements OrderService {
         orders.setCancelTime(LocalDateTime.now());
         orderMapper.amindCancel(orders);
     }
+
+    @Override
+    public void delivery(Long id) {
+        orderMapper.delivery(id);
+    }
 }
