@@ -62,4 +62,10 @@ public class OrderController {
         orderService.delivery(id);
         return Result.success();
     }
+    @PutMapping("complete/{id}")
+    public Result complete(@PathVariable Long id){
+        log.info("订单完成，订单id为{}", id);
+        orderService.complete(id);
+        return Result.success();
+    }
 }

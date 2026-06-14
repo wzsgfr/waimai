@@ -232,4 +232,12 @@ public class OrderServiceImpl implements OrderService {
     public void delivery(Long id) {
         orderMapper.delivery(id);
     }
+
+    @Override
+    public void complete(Long id) {
+        Orders  orders = new Orders();
+        orders.setId(id);
+        orders.setDeliveryTime(LocalDateTime.now());
+        orderMapper.complete(orders);
+    }
 }

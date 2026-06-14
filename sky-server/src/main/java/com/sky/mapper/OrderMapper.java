@@ -53,4 +53,6 @@ public interface OrderMapper {
     void amindCancel(Orders orders);
     @Update("update orders set status = 4 where id = #{id}")
     void delivery(Long id);
+    @Update("update orders set status = 5 ,delivery_time=#{deliveryTime} where id = #{id}")
+    void complete(Orders orders);
 }
