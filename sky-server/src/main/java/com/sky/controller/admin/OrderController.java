@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 @Slf4j
@@ -30,5 +31,11 @@ public class OrderController {
         log.info("统计订单");
         OrderStatisticsVO orderStatisticsVO = orderService.statistics();
         return Result.success(orderStatisticsVO);
+    }
+    @GetMapping("/details/{id}")
+    public Result<OrderVO> details(@PathVariable Long id){
+        log.info("订单详情，订单id为{}", id);
+        OrderVO orderVO = orderService.show(id);
+        return Result.success(orderVO);
     }
 }
