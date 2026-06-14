@@ -9,11 +9,8 @@ import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/admin/order")
@@ -37,5 +34,12 @@ public class OrderController {
         log.info("订单详情，订单id为{}", id);
         OrderVO orderVO = orderService.show(id);
         return Result.success(orderVO);
+    }
+    @PutMapping("/confirm")
+    public Result confirm(@RequestBody  OrdersDTO ordersDTO   ){
+        log.info("订单确认，订单id为{}", ordersDTO);
+        Long id = ordersDTO.getId();
+        orderService.confirm(Math.toIntExact(id));
+        return Result.success();
     }
 }

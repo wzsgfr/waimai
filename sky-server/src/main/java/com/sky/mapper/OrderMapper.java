@@ -43,4 +43,6 @@ public interface OrderMapper {
     Page<OrderVO> conditionSearch(OrdersPageQueryDTO ordersPageQueryDTO);
 
     OrderStatisticsVO statistics();
+    @Update("update orders set status = 3 where id = #{id}")
+    void confirm(Integer id);
 }

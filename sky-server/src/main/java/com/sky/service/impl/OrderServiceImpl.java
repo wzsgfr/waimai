@@ -208,4 +208,9 @@ public class OrderServiceImpl implements OrderService {
     public OrderStatisticsVO statistics() {
        return  orderMapper.statistics();
     }
+
+    @Override
+    public void confirm(Integer id) {
+        orderMapper.confirm(id);
+    }
 }
