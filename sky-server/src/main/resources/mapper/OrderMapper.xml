@@ -58,5 +58,15 @@
             </where>
 
     </select>
+    <select id="statistics" resultType="com.sky.vo.OrderStatisticsVO">
+        select
+        count(id) as total,
+        sum(case when status = 2 then 1 else 0 end) as toBeConfirmed,
+        sum(case when status = 3 then 1 else 0 end) as confirmed,
+        sum(case when status = 4 then 1 else 0 end) as deliveryInProgress,
+        sum(case when status = 5 then 1 else 0 end) as deliveryCompleted,
+        sum(case when status = 6 then 1 else 0 end) as deliveryCanceled
+        from orders
+    </select>
 
 </mapper>
