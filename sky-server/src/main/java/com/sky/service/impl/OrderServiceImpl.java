@@ -5,9 +5,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
-import com.sky.dto.OrdersPageQueryDTO;
-import com.sky.dto.OrdersPaymentDTO;
-import com.sky.dto.OrdersSubmitDTO;
+import com.sky.dto.*;
 import com.sky.entity.*;
 import com.sky.exception.AddressBookBusinessException;
 import com.sky.exception.OrderBusinessException;
@@ -212,5 +210,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void confirm(Integer id) {
         orderMapper.confirm(id);
+    }
+
+    @Override
+    public void rejection(OrdersRejectionDTO  ordersRejectionDTO) {
+        orderMapper.rejection(ordersRejectionDTO);
     }
 }
