@@ -195,4 +195,11 @@ public class OrderServiceImpl implements OrderService {
             shoppingCartMapper.addAll(shoppingCart);
         }
     }
+
+    @Override
+    public PageResult conditionSearch(OrdersPageQueryDTO ordersPageQueryDTO) {
+        PageHelper.startPage(ordersPageQueryDTO.getPage(), ordersPageQueryDTO.getPageSize());
+        Page<OrderVO> page = orderMapper.conditionSearch(ordersPageQueryDTO);
+        return new PageResult(page.getTotal(), page.getResult());
+    }
 }

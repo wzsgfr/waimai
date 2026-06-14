@@ -39,4 +39,5 @@ public interface OrderMapper {
     @Update("update orders set status = 6 where id = #{id}")
     void cancel(Long id);
 
+    Page<OrderVO> conditionSearch(OrdersPageQueryDTO ordersPageQueryDTO);
 }
