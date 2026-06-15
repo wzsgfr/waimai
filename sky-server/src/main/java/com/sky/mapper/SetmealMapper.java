@@ -1,7 +1,10 @@
 package com.sky.mapper;
 
+import com.github.pagehelper.Page;
+import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
+import com.sky.vo.SetmealVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -25,5 +28,7 @@ public interface SetmealMapper {
     List<Dish> dishList(List<Integer> ids);
     @Select("select copies from setmeal_dish where dish_id = #{id}")
     Integer getCopiesById(Long id);
+
+    Page<SetmealVO> page(SetmealPageQueryDTO setmealPageQueryDTO);
 }
 

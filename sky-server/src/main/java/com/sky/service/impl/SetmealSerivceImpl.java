@@ -1,10 +1,15 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.mapper.SetmealMapper;
+import com.sky.result.PageResult;
 import com.sky.service.SetmealSerivce;
 import com.sky.vo.DishItemVO;
+import com.sky.vo.SetmealVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +47,12 @@ public class SetmealSerivceImpl implements SetmealSerivce {
             dishItemVOList.add(dishItemVO);
         }
         return dishItemVOList;
+    }
+
+    @Override
+    public PageResult page(SetmealPageQueryDTO setmealPageQueryDTO) {
+        PageHelper.startPage(setmealPageQueryDTO.getPage(),setmealPageQueryDTO.getPageSize());
+        Page<SetmealVO> page=setmealMapper.page(setmealPageQueryDTO);
+        return new PageResult(page.getTotal(),page.getResult());
     }
 }
