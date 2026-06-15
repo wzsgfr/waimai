@@ -1,8 +1,12 @@
 package com.sky.mapper;
 
 import com.sky.entity.Setmeal;
+import com.sky.entity.SetmealDish;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface SetmealDishMapper {
@@ -10,4 +14,5 @@ public interface SetmealDishMapper {
     int selectid(Long id);
     @Select("select * from setmeal where id=#{setmealId}")
     Setmeal selectId(Long setmealId);
+    void insertBatch(List<SetmealDish> setmealDishes);
 }

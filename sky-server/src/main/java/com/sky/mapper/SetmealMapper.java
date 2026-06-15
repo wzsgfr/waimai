@@ -1,11 +1,14 @@
 package com.sky.mapper;
 
 import com.github.pagehelper.Page;
+import com.sky.anno.AutoFill;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
+import com.sky.enumeration.OperationType;
 import com.sky.vo.SetmealVO;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
@@ -37,5 +40,9 @@ public interface SetmealMapper {
     Setmeal getById(Integer id);
     @Select("select * from setmeal_dish where setmeal_id = #{id}")
     List<SetmealDish> getSetmealDishesById(Integer id);
+    @AutoFill(value = OperationType.INSERT)
+    @Options(useGeneratedKeys = true,keyProperty = "id")
+    @Insert("insert into setmeal (name,category_id,price,status,create_time,update_time,create_user,update_user,image,description) values (#{name},#{categoryId},#{price},#{status},#{createTime},#{updateTime},#{createUser},#{updateUser},#{image},#{description})")
+    void add(Setmeal setmeal);
 }
 

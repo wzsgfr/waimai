@@ -1,5 +1,6 @@
 package com.sky.service;
 
+import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
@@ -17,4 +18,6 @@ public interface SetmealSerivce {
     PageResult page(SetmealPageQueryDTO setmealPageQueryDTO);
 
     SetmealVO getById(Integer id);
+
+    void add(SetmealDTO setmealDTO);
 }

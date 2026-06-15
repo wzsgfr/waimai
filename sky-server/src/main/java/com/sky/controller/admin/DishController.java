@@ -55,6 +55,12 @@ public class DishController {
         dishService.update(dishDTO);
         return Result.success();
     }
+    @GetMapping("/list")
+    public Result<List<DishVO>> list(Integer categoryId){
+        log.info("查询分类下的菜品：{}",categoryId);
+        List<DishVO> list = dishService.getByCategoryId(categoryId);
+        return Result.success(list);
+    }
 
 
 }
