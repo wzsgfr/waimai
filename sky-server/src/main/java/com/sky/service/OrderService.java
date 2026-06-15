@@ -9,7 +9,7 @@ import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
 
 public interface OrderService {
-  OrderSubmitVO submit(OrdersSubmitDTO ordersSubmitDTO);
+  OrderSubmitVO submit(OrdersSubmitDTO ordersSubmitDTO) throws Exception;
   /**
    * 订单支付
    * @param ordersPaymentDTO

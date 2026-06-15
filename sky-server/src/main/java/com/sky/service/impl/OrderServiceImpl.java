@@ -14,13 +14,16 @@ import com.sky.mapper.AddressBookMapper;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.ShoppingCartMapper;
 import com.sky.mapper.UserMapper;
+import com.sky.properties.BaiduMapConfig;
 import com.sky.result.PageResult;
 import com.sky.service.OrderService;
+import com.sky.utils.SearchHttpAK;
 import com.sky.utils.WeChatPayUtil;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 
 public class OrderServiceImpl implements OrderService {
     @Autowired
@@ -44,9 +48,13 @@ public class OrderServiceImpl implements OrderService {
     private AddressBookMapper addressBookMapper;
     @Autowired
     private WeChatPayUtil weChatPayUtil;
+    @Autowired
+    private SearchHttpAK searchHttpAK;
+    @Autowired
+    private BaiduMapConfig baiduMapConfig;
     @Override
     @Transactional
-    public OrderSubmitVO submit(OrdersSubmitDTO ordersSubmitDTO) {
+    public OrderSubmitVO submit(OrdersSubmitDTO ordersSubmitDTO) throws Exception {
         Long addressBookId=ordersSubmitDTO.getAddressBookId();
         AddressBook addressBook= addressBookMapper.getById(addressBookId);
         if (addressBook==null){
@@ -56,6 +64,13 @@ public class OrderServiceImpl implements OrderService {
         List<ShoppingCart>list =shoppingCartMapper.selectAll(userId);
         if (list==null||list.size()==0){
             throw new ShoppingCartBusinessException(MessageConstant.SHOPPING_CART_IS_NULL);
+        }
+        String address1=addressBook.getProvinceName()+addressBook.getCityName()+addressBook.getDistrictName()+addressBook.getDetail();
+        String address2=baiduMapConfig.getAddress();
+        boolean exceed= searchHttpAK.isDistanceExceed5Km(address1,address2);
+        log.info("距离是否超过5公里："+exceed);
+        if (exceed){
+            throw new OrderBusinessException(MessageConstant.OUT_OF_DELIVERY_RANGE);
         }
         User user = userMapper.getById(userId);
         Orders orders=new Orders();
