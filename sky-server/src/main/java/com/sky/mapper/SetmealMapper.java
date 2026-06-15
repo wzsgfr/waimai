@@ -4,8 +4,10 @@ import com.github.pagehelper.Page;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
+import com.sky.entity.SetmealDish;
 import com.sky.vo.SetmealVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -30,5 +32,10 @@ public interface SetmealMapper {
     Integer getCopiesById(Long id);
 
     Page<SetmealVO> page(SetmealPageQueryDTO setmealPageQueryDTO);
+    @Select("select * from setmeal where id = #{id}")
+    @Options(useGeneratedKeys = true,keyProperty = "id")
+    Setmeal getById(Integer id);
+    @Select("select * from setmeal_dish where setmeal_id = #{id}")
+    List<SetmealDish> getSetmealDishesById(Integer id);
 }
 

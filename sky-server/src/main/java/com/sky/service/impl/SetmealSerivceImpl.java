@@ -55,4 +55,13 @@ public class SetmealSerivceImpl implements SetmealSerivce {
         Page<SetmealVO> page=setmealMapper.page(setmealPageQueryDTO);
         return new PageResult(page.getTotal(),page.getResult());
     }
+
+    @Override
+    public SetmealVO getById(Integer id) {
+        Setmeal setmeal=setmealMapper.getById(id);
+        SetmealVO setmealVO=new SetmealVO();
+        BeanUtils.copyProperties(setmeal,setmealVO);
+        setmealVO.setSetmealDishes(setmealMapper.getSetmealDishesById(id));
+        return setmealVO;
+    }
 }
