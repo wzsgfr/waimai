@@ -31,4 +31,6 @@ public interface DishMapper {
     @Select("select * from dish where category_id = #{categoryId} and status=1")
     @Options(useCache = true,keyProperty = "id")
     List<Dish> getByCategoryId(Integer categoryId);
+    @Update("update dish set status = #{status} where id = #{id}")
+    void startOrStop(Long status, Long id);
 }

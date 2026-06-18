@@ -25,8 +25,8 @@ public class DishController {
         PageResult pageResult = dishService.page(dishPageQueryDTO);
         return Result.success(pageResult);
     }
-    @PostMapping("/{status}")
-    public Result startOrStop( Integer status, Long id){
+    @PostMapping("/status/{status}")
+    public Result startOrStop(@PathVariable Long status, Long id){
         log.info("起售或停售：{}",id);
         dishService.startOrStop(status,id);
         return Result.success();

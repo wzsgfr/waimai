@@ -10,7 +10,7 @@ import java.util.List;
 public interface DishService {
     PageResult page(DishPageQueryDTO dishPageQueryDTO);
 
-    void startOrStop(Integer status, Long id);
+    void startOrStop(Long status, Long id);
 
     void add(DishDTO dishDTO);
 

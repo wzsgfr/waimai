@@ -7,10 +7,12 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.entity.Setmeal;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
+import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
@@ -36,15 +38,23 @@ public class DishServiceImpl  implements DishService {
 
         return new PageResult(page.getTotal(),page.getResult());
     }
-
+    @Autowired
+    private SetmealDishMapper setmealDishMapper;
+    @Autowired
+    private SetmealMapper setmealMapper;
     @Override
-    public void startOrStop(Integer status, Long id) {
-        Dish dish = Dish.builder()
-                .id(id)
-                .status(status)
-                .build();
-        dishMapper.update(dish);
-
+    @Transactional
+    public void startOrStop(Long status, Long id) {
+        if (status == 1)
+        {
+            dishMapper.startOrStop(status,id);
+        }
+        else
+        {
+            Long setmealId= setmealDishMapper.setmealId(id);
+            setmealMapper.status(0L,setmealId);
+            dishMapper.startOrStop(status,id);
+        }
     }
     @Autowired
     private DishFlavorMapper dishFlavorMapper;
@@ -64,8 +74,6 @@ public class DishServiceImpl  implements DishService {
         }
 
     }
-    @Autowired
-    private SetmealDishMapper setmealDishMapper ;
     @Override
     @Transactional
     @CacheEvict(value = "dishCache",allEntries = true)
