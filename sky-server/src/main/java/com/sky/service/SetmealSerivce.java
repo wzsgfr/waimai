@@ -20,4 +20,6 @@ public interface SetmealSerivce {
     SetmealVO getById(Integer id);
 
     void add(SetmealDTO setmealDTO);
+
+    void update(SetmealDTO setmealDTO);
 }

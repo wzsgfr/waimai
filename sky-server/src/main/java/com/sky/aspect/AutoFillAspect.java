@@ -46,6 +46,8 @@ public class AutoFillAspect {
             }else if(value == OperationType.UPDATE){
                    Method setUpdateTime = entity.getClass().getDeclaredMethod("setUpdateTime", LocalDateTime.class);
                    Method setUpdateUser = entity.getClass().getDeclaredMethod("setUpdateUser", Long.class);
+                   setUpdateTime.invoke(entity, LocalDateTime.now());
+                   setUpdateUser.invoke(entity, BaseContext.getCurrentId());
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

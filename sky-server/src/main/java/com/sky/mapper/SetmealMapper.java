@@ -8,10 +8,7 @@ import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.enumeration.OperationType;
 import com.sky.vo.SetmealVO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -25,7 +22,7 @@ public interface SetmealMapper {
      */
     @Select("select count(id) from setmeal where category_id = #{categoryId}")
     Integer countByCategoryId(Long id);
-    @Select("select * from setmeal where category_id = #{categoryId}")
+    @Select("select * from setmeal where category_id = #{categoryId} and status=1")
     List<Setmeal> list(Integer categoryId);
     @Select("select dish_id from setmeal_dish where setmeal_id = #{id}")
     List<Integer> dishIds(Integer id);
@@ -35,7 +32,7 @@ public interface SetmealMapper {
     Integer getCopiesById(Long id);
 
     Page<SetmealVO> page(SetmealPageQueryDTO setmealPageQueryDTO);
-    @Select("select * from setmeal where id = #{id}")
+    @Select("select * from setmeal where id = #{id} ")
     @Options(useGeneratedKeys = true,keyProperty = "id")
     Setmeal getById(Integer id);
     @Select("select * from setmeal_dish where setmeal_id = #{id}")
@@ -44,5 +41,8 @@ public interface SetmealMapper {
     @Options(useGeneratedKeys = true,keyProperty = "id")
     @Insert("insert into setmeal (name,category_id,price,status,create_time,update_time,create_user,update_user,image,description) values (#{name},#{categoryId},#{price},#{status},#{createTime},#{updateTime},#{createUser},#{updateUser},#{image},#{description})")
     void add(Setmeal setmeal);
+    @AutoFill(value = OperationType.UPDATE)
+    @Update("update setmeal set name = #{name},category_id = #{categoryId},price = #{price},status = #{status},update_time = #{updateTime},update_user = #{updateUser},image = #{image},description = #{description} where id = #{id}")
+    void update(Setmeal setmeal);
 }
 

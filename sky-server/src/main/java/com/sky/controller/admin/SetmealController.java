@@ -35,6 +35,12 @@ public class SetmealController {
         setmealSerivce.add(setmealDTO);
         return Result.success();
     }
+    @PutMapping
+    public Result update(@RequestBody SetmealDTO setmealDTO){
+        log.info("编辑套餐：{}",setmealDTO);
+        setmealSerivce.update(setmealDTO);
+        return Result.success();
+    }
 
 
 }
