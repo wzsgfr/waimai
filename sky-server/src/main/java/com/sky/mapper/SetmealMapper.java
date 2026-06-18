@@ -49,5 +49,7 @@ public interface SetmealMapper {
     Integer startOrStop(Long dishId);
     @Update("update setmeal set status = #{status} where id = #{id}")
     void status(Long status, Long id);
+    @Delete("delete from setmeal where id = #{id}")
+    void delete(Long id);
 }
 

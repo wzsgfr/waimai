@@ -44,6 +44,7 @@ public class DishServiceImpl  implements DishService {
     private SetmealMapper setmealMapper;
     @Override
     @Transactional
+    @CacheEvict(value = "dishCache",allEntries = true)
     public void startOrStop(Long status, Long id) {
         if (status == 1)
         {

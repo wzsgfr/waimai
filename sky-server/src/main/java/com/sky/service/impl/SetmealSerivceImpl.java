@@ -120,4 +120,13 @@ public class SetmealSerivceImpl implements SetmealSerivce {
             setmealMapper.status(status,id);
         }
     }
+
+    @Override
+    @Transactional
+    public void delete(List<Long> ids) {
+        for (Long id : ids){
+            setmealDishMapper.deleteBySetmealId(id);
+            setmealMapper.delete(id);
+        }
+    }
 }
