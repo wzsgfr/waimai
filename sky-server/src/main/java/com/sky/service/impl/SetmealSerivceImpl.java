@@ -2,11 +2,13 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
+import com.sky.exception.SetmealEnableFailedException;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
@@ -102,6 +104,20 @@ public class SetmealSerivceImpl implements SetmealSerivce {
                 setmealDish.setSetmealId(setmeal.getId());
             }
             setmealDishMapper.insertBatch(setmealDishes);
+        }
+    }
+
+    @Override
+    public void startOrStop(Long status, Long id) {
+        List<Long> ids=setmealDishMapper.getIdsBySetmealId(id);
+        if(ids != null && ids.size() > 0) {
+            for (Long dishId : ids) {
+             Integer dishStatus = setmealMapper.startOrStop(dishId);
+                if (dishStatus ==0){
+                    throw new SetmealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);
+                }
+            }
+            setmealMapper.status(status,id);
         }
     }
 }

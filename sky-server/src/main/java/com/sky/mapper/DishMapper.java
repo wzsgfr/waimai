@@ -28,7 +28,7 @@ public interface DishMapper {
 
     void delete(List<Long> ids);
 
-    @Select("select * from dish where category_id = #{categoryId}")
+    @Select("select * from dish where category_id = #{categoryId} and status=1")
     @Options(useCache = true,keyProperty = "id")
     List<Dish> getByCategoryId(Integer categoryId);
 }

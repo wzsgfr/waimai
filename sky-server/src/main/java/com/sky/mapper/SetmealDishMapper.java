@@ -11,6 +11,8 @@ import java.util.List;
 
 @Mapper
 public interface SetmealDishMapper {
+ 
+
     @Select("SELECT COUNT( *) FROM setmeal_dish WHERE dish_id = #{id};")
     int selectid(Long id);
     @Select("select * from setmeal where id=#{setmealId}")
@@ -18,4 +20,6 @@ public interface SetmealDishMapper {
     void insertBatch(List<SetmealDish> setmealDishes);
     @Delete("delete from setmeal_dish where setmeal_id=#{id}")
     void deleteBySetmealId(Long id);
+    @Select("select dish_id from setmeal_dish where setmeal_id=#{id}")
+    List<Long> getIdsBySetmealId(Long id);
 }

@@ -44,5 +44,10 @@ public interface SetmealMapper {
     @AutoFill(value = OperationType.UPDATE)
     @Update("update setmeal set name = #{name},category_id = #{categoryId},price = #{price},status = #{status},update_time = #{updateTime},update_user = #{updateUser},image = #{image},description = #{description} where id = #{id}")
     void update(Setmeal setmeal);
+
+    @Select("select status from dish where id=#{dishId} ")
+    Integer startOrStop(Long dishId);
+    @Update("update setmeal set status = #{status} where id = #{id}")
+    void status(Long status, Long id);
 }
 

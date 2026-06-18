@@ -41,6 +41,11 @@ public class SetmealController {
         setmealSerivce.update(setmealDTO);
         return Result.success();
     }
-
+    @PostMapping("/status/{status}")
+    public Result startOrStop(@PathVariable Long status,Long id){
+        log.info("起售或停售套餐：{}",id);
+        setmealSerivce.startOrStop(status,id);
+        return Result.success();
+    }
 
 }

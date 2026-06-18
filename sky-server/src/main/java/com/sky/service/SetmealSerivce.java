@@ -22,4 +22,6 @@ public interface SetmealSerivce {
     void add(SetmealDTO setmealDTO);
 
     void update(SetmealDTO setmealDTO);
+
+    void startOrStop(Long status, Long id);
 }
