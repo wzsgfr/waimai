@@ -1,9 +1,7 @@
 package com.sky.mapper;
 
 import com.github.pagehelper.Page;
-import com.sky.dto.OrdersCancelDTO;
 import com.sky.dto.OrdersPageQueryDTO;
-import com.sky.dto.OrdersRejectionDTO;
 import com.sky.entity.OrderDetail;
 import com.sky.entity.Orders;
 import com.sky.vo.OrderStatisticsVO;
@@ -55,4 +53,7 @@ public interface OrderMapper {
     void delivery(Long id);
     @Update("update orders set status = 5 ,delivery_time=#{deliveryTime} where id = #{id}")
     void complete(Orders orders);
+    @Select("select * from orders where status=1")
+    List<Orders> getPaymentOrders();
+
 }

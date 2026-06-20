@@ -83,6 +83,7 @@ public class OrderServiceImpl implements OrderService {
         orders.setConsignee(addressBook.getConsignee());
         orders.setAddress(addressBook.getDetail());
         orders.setUserName(user.getName());
+        orders.setStatus(1);
         orders.setPhone(addressBook.getPhone());
         orderMapper.insert(orders);
         List<OrderDetail>orderDetails=new ArrayList<>();
@@ -254,5 +255,23 @@ public class OrderServiceImpl implements OrderService {
         orders.setId(id);
         orders.setDeliveryTime(LocalDateTime.now());
         orderMapper.complete(orders);
+    }
+
+    @Override
+    public void processTimeoutOrder() {
+        List<Orders> ordersList = orderMapper.getPaymentOrders();
+        for (Orders orders : ordersList) {
+            LocalDateTime orderTime = orders.getOrderTime();
+            LocalDateTime paymentTime = orderTime.plusMinutes(15);
+            if (LocalDateTime.now().isAfter(paymentTime)) {
+                log.info("订单{}支付超时", orders.getId());
+                Orders orders1 = new Orders();
+                orders1.setId(orders.getId());
+                orders1.setStatus(Orders.CANCELLED);
+                orders1.setCancelReason("支付超时");
+                orders1.setCancelTime(LocalDateTime.now());
+                orderMapper.amindCancel(orders1);
+            }
+        }
     }
 }
