@@ -15,6 +15,11 @@ public class OrderTask {
         log.info("处理超时订单");
         orderService.processTimeoutOrder();
     }
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void processCancelOrder(){
+        log.info("处理派送中的订单");
+        orderService.processCancelOrder();
+    }
 
 
 }

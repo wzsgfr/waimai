@@ -55,5 +55,8 @@ public interface OrderMapper {
     void complete(Orders orders);
     @Select("select * from orders where status=1")
     List<Orders> getPaymentOrders();
-
+    @Select("select *from orders where status=4")
+    List<Orders> getCancelOrders();
+    @Update("update orders set status=5 ,delivery_time=#{deliveryTime} where id=#{id}")
+    void estimatedDelivery(Orders orders);
 }

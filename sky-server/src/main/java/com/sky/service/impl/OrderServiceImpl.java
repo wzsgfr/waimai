@@ -274,4 +274,13 @@ public class OrderServiceImpl implements OrderService {
             }
         }
     }
+
+    @Override
+    public void processCancelOrder() {
+        List<Orders> ordersList = orderMapper.getCancelOrders();
+        for (Orders orders : ordersList) {
+           orders.setEstimatedDeliveryTime(LocalDateTime.now());
+            orderMapper.estimatedDelivery( orders);
+        }
+    }
 }
