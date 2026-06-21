@@ -1,5 +1,6 @@
 package com.sky.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -23,6 +24,7 @@ import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
+import com.sky.webSocket.WebSocketServer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -150,6 +154,8 @@ public class OrderServiceImpl implements OrderService {
 
      * @param outTradeNo
      */
+    @Autowired
+    private WebSocketServer webSocketServer;
     public void paySuccess(String outTradeNo) {
 
         // 根据订单号查询订单
@@ -164,6 +170,12 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
         orderMapper.update(orders);
+        Map map = new HashMap<>();
+        map.put("type", 1);
+        map.put("orderId", ordersDB.getId());
+        map.put("content","订单号"+outTradeNo);
+        String json = JSON.toJSONString(map);
+        webSocketServer.sendToAllClient(json);
     }
 
     @Override
@@ -260,17 +272,19 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void processTimeoutOrder() {
         List<Orders> ordersList = orderMapper.getPaymentOrders();
-        for (Orders orders : ordersList) {
-            LocalDateTime orderTime = orders.getOrderTime();
-            LocalDateTime paymentTime = orderTime.plusMinutes(15);
-            if (LocalDateTime.now().isAfter(paymentTime)) {
-                log.info("订单{}支付超时", orders.getId());
-                Orders orders1 = new Orders();
-                orders1.setId(orders.getId());
-                orders1.setStatus(Orders.CANCELLED);
-                orders1.setCancelReason("支付超时");
-                orders1.setCancelTime(LocalDateTime.now());
-                orderMapper.amindCancel(orders1);
+        if (ordersList != null && ordersList.size() > 0) {
+            for (Orders orders : ordersList) {
+                LocalDateTime orderTime = orders.getOrderTime();
+                LocalDateTime paymentTime = orderTime.plusMinutes(15);
+                if (LocalDateTime.now().isAfter(paymentTime)) {
+                    log.info("订单{}支付超时", orders.getId());
+                    Orders orders1 = new Orders();
+                    orders1.setId(orders.getId());
+                    orders1.setStatus(Orders.CANCELLED);
+                    orders1.setCancelReason("支付超时");
+                    orders1.setCancelTime(LocalDateTime.now());
+                    orderMapper.amindCancel(orders1);
+                }
             }
         }
     }
@@ -278,9 +292,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void processCancelOrder() {
         List<Orders> ordersList = orderMapper.getCancelOrders();
-        for (Orders orders : ordersList) {
-           orders.setEstimatedDeliveryTime(LocalDateTime.now());
-            orderMapper.estimatedDelivery( orders);
+        if (ordersList != null && ordersList.size() > 0) {
+            for (Orders orders : ordersList) {
+                orders.setEstimatedDeliveryTime(LocalDateTime.now());
+                orderMapper.estimatedDelivery(orders);
+            }
         }
     }
 }
