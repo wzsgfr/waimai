@@ -299,4 +299,16 @@ public class OrderServiceImpl implements OrderService {
             }
         }
     }
+
+    @Override
+    public void reminder(Long id) {
+        Map map = new HashMap<>();
+       Orders orders = orderMapper.getByOrderIda(id);
+        String outTradeNo = orders.getNumber();
+        map.put("type", 2);
+        map.put("orderId", outTradeNo);
+        map.put("content","订单号"+outTradeNo);
+        String json = JSON.toJSONString(map);
+        webSocketServer.sendToAllClient(json);
+    }
 }

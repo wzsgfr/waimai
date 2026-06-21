@@ -48,4 +48,6 @@ public interface OrderService {
   void processTimeoutOrder();
 
   void processCancelOrder();
+
+  void reminder(Long id);
 }
