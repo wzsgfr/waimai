@@ -8,7 +8,9 @@ import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderVO;
 import org.apache.ibatis.annotations.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
@@ -59,4 +61,10 @@ public interface OrderMapper {
     List<Orders> getCancelOrders();
     @Update("update orders set status=5 ,delivery_time=#{deliveryTime} where id=#{id}")
     void estimatedDelivery(Orders orders);
+
+    Double sumByMap(Map map);
+
+    Integer countByMap(Map map);
+
+    List<Map> getSalesTop10(LocalDate begin, LocalDate end);
 }
