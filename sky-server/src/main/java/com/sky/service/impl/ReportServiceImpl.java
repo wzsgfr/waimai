@@ -108,9 +108,9 @@ public class ReportServiceImpl implements ReportService {
         for (Map map : mapList) {
             nameList.add((String) map.get("name"));
         }
-        List<Integer> numberList = new ArrayList<>();
+        List<String> numberList = new ArrayList<>();
         for (Map map : mapList) {
-            numberList.add((Integer) map.get("number"));
+            numberList.add(map.get("number").toString());
         }
         String nameListString = StringUtils.join(nameList, ",");
         String numberListString = StringUtils.join(numberList, ",");
