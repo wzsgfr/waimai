@@ -67,4 +67,8 @@ public interface OrderMapper {
     Integer countByMap(Map map);
 
     List<Map> getSalesTop10(LocalDate begin, LocalDate end);
+    @Select("SELECT count(id) from orders where status=#{i}")
+    Integer countByStatus(int i);
+    @Select("SELECT count(id) from orders  ")
+    Integer count();
 }

@@ -51,5 +51,7 @@ public interface SetmealMapper {
     void status(Long status, Long id);
     @Delete("delete from setmeal where id = #{id}")
     void delete(Long id);
+    @Select("select count(id) from setmeal where status=#{status}")
+    Integer count(Integer  status);
 }
 

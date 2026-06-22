@@ -33,4 +33,6 @@ public interface DishMapper {
     List<Dish> getByCategoryId(Integer categoryId);
     @Update("update dish set status = #{status} where id = #{id}")
     void startOrStop(Long status, Long id);
+    @Select("select count(1) from dish where status = #{i}")
+    Integer countByStatus(int i);
 }
